@@ -51,10 +51,7 @@ class Movie
     sql = "SELECT castings.fee FROM castings
             WHERE castings.movie_id = $1"
     values = [@id]
-    casting_fee_array = SqlRunner.run(sql, values)
-    
-    total_star_fees = casting_fee_array.reduce(0) { |total, fee_hash| total + fee_hash['fee'].to_i }
-    return remaining_budget = @budget - total_star_fees
+    return remaining_budget = @budget - SqlRunner.run(sql, values).reduce(0) { |total, fee_hash| total + fee_hash['fee'].to_i }
   end
 
   def self.all
