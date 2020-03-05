@@ -18,15 +18,18 @@ star2 = Star.new( {'first_name' => 'Daisy',
 star2.save
 
 movie1= Movie.new( {'title' => 'Lemon Grove',
-                    'genre' => 'avant-garden'} )
+                    'genre' => 'avant-garden',
+                    'budget' => 20} )
 movie1.save
 
 movie2 = Movie.new( {'title' => 'Twisted Shadow',
-                      'genre' => 'crime thriller'} )
+                      'genre' => 'crime thriller',
+                      'budget' => 50} )
 movie2.save
 
 movie3 = Movie.new( {'title' => 'Electric Eden',
-                      'genre' => 'sci-fi'} )
+                      'genre' => 'sci-fi',
+                      'budget' => 40} )
 movie3.save
 
 casting1 = Casting.new( {'movie_id' => movie1.id,
