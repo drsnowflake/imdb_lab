@@ -23,8 +23,7 @@ class Movie
           ($1, $2, $3)
           RETURNING id"
     values = [@title, @genre, @budget]
-    movie_hash = SqlRunner.run(sql, values).first()
-    @id = movie_hash['id'].to_i
+    @id = SqlRunner.run(sql, values).first()['id'].to_i
   end
 
   def update
@@ -43,21 +42,19 @@ class Movie
             ON castings.star_id = stars.id
             WHERE movie_id = $1"
     values = [@id]
-    stars_array = SqlRunner.run(sql, values)
-    return stars_array.map { |star| Star.new(star)}
+    SqlRunner.run(sql, values).map { |star| Star.new(star)}
   end
 
   def remaining_budget
     sql = "SELECT castings.fee FROM castings
             WHERE castings.movie_id = $1"
     values = [@id]
-    return remaining_budget = @budget - SqlRunner.run(sql, values).reduce(0) { |total, fee_hash| total + fee_hash['fee'].to_i }
+    @budget - SqlRunner.run(sql, values).reduce(0) { |total, fee_hash| total + fee_hash['fee'].to_i }
   end
 
   def self.all
     sql = "SELECT * FROM movies"
-    movie_array = SqlRunner.run(sql)
-    return movie_array.map { |movie| Movie.new(movie) }
+    SqlRunner.run(sql).map { |movie| Movie.new(movie) }
   end
 
   def self.delete_all

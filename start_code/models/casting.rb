@@ -23,8 +23,7 @@ class Casting
             ($1, $2, $3)
             RETURNING id"
     values = [@movie_id, @star_id, @fee]
-    casting_hash = SqlRunner.run(sql, values).first()
-    @id = casting_hash['id'].to_i
+    @id = SqlRunner.run(sql, values).first()['id'].to_i
   end
 
   def update
@@ -39,8 +38,7 @@ class Casting
 
   def self.all
     sql = "SELECT * FROM castings"
-    casting_array = SqlRunner.run(sql)
-    return casting_array.map { |casting| Casting.new(casting) }
+    SqlRunner.run(sql).map { |casting| Casting.new(casting) }
   end
 
   def self.delete_all

@@ -21,8 +21,7 @@ class Star
             ($1, $2)
             RETURNING id"
     values = [@first_name, @last_name]
-    star_hash = SqlRunner.run(sql, values).first()
-    @id = star_hash['id'].to_i
+    @id = SqlRunner.run(sql, values).first()['id'].to_i
   end
 
   def update
@@ -41,14 +40,12 @@ class Star
             ON castings.movie_id = movies.id
             WHERE star_id = $1"
     values = [@id]
-    movies_array = SqlRunner.runs(sql, values)
-    return movies_array.map { |movie| Movie.new(movie)}
+    SqlRunner.runs(sql, values).map { |movie| Movie.new(movie)}
   end
 
   def self.all
     sql = "SELECT * FROM stars"
-    star_array = SqlRunner.run(sql)
-    return star_array.map { |star| Star.new(star) }
+    SqlRunner.run(sql).map { |star| Star.new(star) }
   end
 
   def self.delete_all
